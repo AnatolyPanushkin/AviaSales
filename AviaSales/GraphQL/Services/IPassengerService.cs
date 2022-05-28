@@ -14,7 +14,7 @@ namespace AviaSales.GraphQL.Services
 
         Passenger AddPassenger(Passenger passenger);
 
-        Passenger DeletePassenger(Passenger passenger);
+        Passenger DeletePassenger(int id);
 
         Town CheckTown(string name);
 

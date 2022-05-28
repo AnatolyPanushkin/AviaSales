@@ -39,7 +39,16 @@ namespace AviaSales.GraphQL.Services
 
         public Passenger UpdatePassenger(Passenger passenger, int id)
         {
-            throw new System.NotImplementedException();
+            var updatingPassenger = _context.Passengers.SingleOrDefault(t=>t.Id==id);
+            
+            updatingPassenger = passenger;
+            updatingPassenger.Id = id;
+
+            _context.Passengers.Attach(updatingPassenger).Property(p => p.Id).IsModified = true;
+           //_context.Passengers.Update(updatingPassenger);
+            _context.SaveChanges();
+
+            return updatingPassenger;
         }
 
         public Passenger AddPassenger(Passenger passenger)
@@ -49,9 +58,17 @@ namespace AviaSales.GraphQL.Services
             return result;
         }
 
-        public Passenger DeletePassenger(Passenger passenger)
+        public Passenger DeletePassenger(int id)
         {
-            throw new System.NotImplementedException();
+            var deletePassenger = _context.Passengers.FirstOrDefault(p => p.Id == id);
+            var deleteTicket = _context.Tickets.FirstOrDefault(t => t.Id == id);
+
+            _context.Tickets.Remove(deleteTicket);
+            _context.Passengers.Remove(deletePassenger);
+            
+            _context.SaveChanges();
+
+            return deletePassenger;
         }
 
         
@@ -72,8 +89,5 @@ namespace AviaSales.GraphQL.Services
             _context.SaveChanges();
             return result;
         }
-        
-        
-        
     }
 }

@@ -54,6 +54,42 @@ namespace AviaSales.GraphQL.Mutation
                     };
 
                 });
+
+            Field<PassengerGraphType>("updatePassenger",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<StringGraphType>>{Name = "id"},
+                    new QueryArgument<NonNullGraphType<StringGraphType>> {Name = "firstName"},
+                    new QueryArgument<NonNullGraphType<StringGraphType>>{Name = "lastName"}
+                ),
+                resolve: tContext =>
+                {
+                    var id =int.Parse(tContext.GetArgument<string>("id"));
+                    var firstName = tContext.GetArgument<string>("firstName");
+                    var lastName = tContext.GetArgument<string>("lastName");
+
+                    var newPassenger = new Passenger()
+                    {
+                        FirstName = firstName,
+                        LastName = lastName
+                    };
+                    var passenger = _service.UpdatePassenger(newPassenger, id);
+
+                    return passenger;
+                }); 
+            
+            
+            Field<PassengerGraphType>("deletePassenger",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<StringGraphType>>{Name = "id"}
+                ),
+                resolve: tContext =>
+                {
+                    var id =int.Parse(tContext.GetArgument<string>("id"));
+                    
+                    var passenger = _service.DeletePassenger(id);
+
+                    return passenger;
+                }); 
         }
     }
 }
