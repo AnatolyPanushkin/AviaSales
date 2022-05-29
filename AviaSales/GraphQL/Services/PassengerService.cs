@@ -41,11 +41,11 @@ namespace AviaSales.GraphQL.Services
         {
             var updatingPassenger = _context.Passengers.SingleOrDefault(t=>t.Id==id);
             
-            updatingPassenger = passenger;
+            updatingPassenger.FirstName = passenger.FirstName;
+            updatingPassenger.LastName = passenger.LastName;
             updatingPassenger.Id = id;
-
-            _context.Passengers.Attach(updatingPassenger).Property(p => p.Id).IsModified = true;
-           //_context.Passengers.Update(updatingPassenger);
+            
+            _context.Passengers.Update(updatingPassenger);
             _context.SaveChanges();
 
             return updatingPassenger;
